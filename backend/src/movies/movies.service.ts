@@ -11,10 +11,18 @@ export class MoviesService {
   ) {}
 
   async winnersIntervals() {
-    const movies = await this.repo.find({
-      where: { winner: true },
-      order: { year: 'DESC' },
-    });
+    const movies = await this.repo.query(
+      [
+        'SELECT distinct producer, winner, year FROM Movies ',
+        'WHERE winner = true',
+        'ORDER BY year DESC',
+      ].join(' '),
+    );
+
+    // .find({
+    // where: { winner: true },
+    // order: { year: 'DESC' },
+    // });
     type WinnerInterval = {
       producer: string;
       interval: number;
@@ -38,7 +46,7 @@ export class MoviesService {
       } else {
         const { followingWin } = winnersSet.get(producer);
         const interval = followingWin - year;
-        if (interval < minInterval) minInterval = interval;
+        if (interval > 0 && interval < minInterval) minInterval = interval;
         if (interval > maxInterval) maxInterval = interval;
 
         winners.push({

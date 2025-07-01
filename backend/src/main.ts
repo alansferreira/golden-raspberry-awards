@@ -8,7 +8,7 @@ async function bootstrap() {
   const dbalreadyexists = fs.existsSync(
     path.resolve(__dirname, '../db.sqlite'),
   );
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   if (!dbalreadyexists) {
     const lines = fs
       .readFileSync(path.resolve(__dirname, '../../movielist.csv'))
@@ -30,17 +30,24 @@ async function bootstrap() {
     const moveService = app.get(MoviesService);
 
     for (const r of lines) {
+      const studios = r.studios
+        .replace(/((, and )|(, )|( and ))/g, ';;')
+        .split(';;');
       const producers = r.producers
         .replace(/((, and )|(, )|( and ))/g, ';;')
         .split(';;');
-      for (const producer of producers) {
-        await moveService.create({
-          ...r,
-          producer,
-        });
+
+      for (const studio of studios) {
+        for (const producer of producers) {
+          await moveService.create({
+            ...r,
+            studio,
+            producer,
+          });
+        }
       }
     }
   }
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

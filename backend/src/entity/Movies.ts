@@ -11,7 +11,7 @@ export class Movies {
   @Column()
   title: string;
   @Column()
-  studios: string;
+  studio: string;
   @Column()
   producer: string;
   @Column()

@@ -1,0 +1,28 @@
+<div class="container mt-4">
+  <table
+    class="table table-striped mt-3"
+  >
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Usuário</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (movie of movies; track movie.title) {
+      <tr>
+        <td>{{ movie.id }}</td>
+        <td>{{ movie.title }}</td>
+        <td>{{ movie.year }}</td>
+        <td>{{ movie.winner }}</td>
+      </tr>
+      } @empty {
+      <tr>
+        <p>Carregando usuários...</p>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
