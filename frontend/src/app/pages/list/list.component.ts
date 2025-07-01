@@ -1,6 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatTable, MatTableModule } from '@angular/material/table';
 interface PageableResult<T>{
   totalItems: number;
   page: number;
@@ -17,7 +22,15 @@ interface Movie{
 }
 @Component({
   selector: 'app-list',
-  imports: [MatPaginatorModule],
+  imports: [
+    MatPaginatorModule,
+    MatTableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
@@ -27,6 +40,7 @@ export class ListComponent {
   winnerFilter?: boolean;
   totalItems: number = 0;
   currentPage: number = 1;
+  displayedColumns: string[] = ['id', 'year', 'title',  'winner'];
 
   constructor(private http: HttpClient) {}
   ngOnInit() {
