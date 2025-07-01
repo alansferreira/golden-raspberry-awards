@@ -4,18 +4,18 @@
   >
     <thead class="table-dark">
       <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Usuário</th>
-        <th>Email</th>
+        <!-- <th>ID</th> -->
+        <th>Year</th>
+        <th>Title</th>
+        <th>Winner</th>
       </tr>
     </thead>
     <tbody>
       @for (movie of movies; track movie.title) {
       <tr>
-        <td>{{ movie.id }}</td>
-        <td>{{ movie.title }}</td>
+        <!-- <td>{{ movie.id }}</td> -->
         <td>{{ movie.year }}</td>
+        <td>{{ movie.title }}</td>
         <td>{{ movie.winner }}</td>
       </tr>
       } @empty {
@@ -25,4 +25,24 @@
       }
     </tbody>
   </table>
+  @if (totalItems > 1) {
+    <mat-paginator
+      [length]="totalItems"
+      [pageSizeOptions]="[15, 45, 100]"
+      aria-label="Select page"
+      [hidePageSize]="true"
+      (page)="fetch($event)"
+    >
+    </mat-paginator>
+
+  <!-- <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="currentPage === 1"><a class="page-link" href="#" (click)="previousPage">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+  </nav> -->
+  }
 </div>

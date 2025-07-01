@@ -15,6 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       migrations: [__dirname + '../migrations/*.{ts,js}'],
       migrationsRun: true,
       subscribers: [__dirname + '/**/*.subscriber{.ts,.js}'],
+      logging: true,
     }),
   ],
   controllers: [AppController],
