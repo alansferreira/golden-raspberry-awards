@@ -37,15 +37,21 @@ async function bootstrap() {
         .replace(/((, and )|(, )|( and ))/g, ';;')
         .split(';;');
 
-      for (const studio of studios) {
-        for (const producer of producers) {
-          await moveService.create({
-            ...r,
-            studio,
-            producer,
-          });
-        }
-      }
+      await moveService.expand({
+        ...r,
+        studios,
+        producers,
+      });
+
+      // for (const studio of studios) {
+      //   for (const producer of producers) {
+      //     await moveService.expand({
+      //       ...r,
+      //       studio,
+      //       producer,
+      //     });
+      //   }
+      // }
     }
   }
   await app.listen(process.env.PORT ?? 3001);

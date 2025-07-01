@@ -2,16 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Movies } from '../entity/Movies';
+import { MoviesExpanded } from '../entity/MoviesExpanded';
 
 @Injectable()
 export class MoviesService {
   constructor(
     @InjectRepository(Movies)
-    private repo: Repository<Movies>,
+    private moviesRepo: Repository<Movies>,
+    @InjectRepository(MoviesExpanded)
+    private moviesExpandedRepo: Repository<MoviesExpanded>,
   ) {}
 
   async winnersIntervals() {
-    const movies = await this.repo.query(
+    const movies = await this.moviesExpandedRepo.query(
       [
         'SELECT distinct producer, winner, year FROM Movies ',
         'WHERE winner = true',
@@ -62,15 +65,35 @@ export class MoviesService {
       max: winners.filter((f) => f.interval === maxInterval),
     };
   }
-  async create(entity: Movies): Promise<Movies> {
-    return await this.repo.save(entity);
+  async expand(e: Pick<Movies, 'year' | 'title' | 'winner'> & { producers: string[], studios: string[]}): Promise<MoviesExpanded[]> {
+    const {title, year, winner, producers, studios} = e
+    
+    await this.moviesRepo.save({
+      title, 
+      year, 
+      winner,
+      studios: studios.join(', '),
+      producers: producers.join(', '),
+    });
+    
+    const results = [];
+    
+    await this.moviesExpandedRepo.manager.transaction( async (t) => {
+      for (const studio of e.studios) {
+        for (const producer of e.producers) {
+          results.push(
+            await this.moviesExpandedRepo.save({
+              title, 
+              year, 
+              winner,
+              studio,
+              producer,
+            })
+          )
+        }
+      }
+    })
+    return results;
   }
 
-  async update(entity: Movies): Promise<UpdateResult> {
-    return await this.repo.update(entity.id, entity);
-  }
-
-  async delete(id): Promise<DeleteResult> {
-    return await this.repo.delete(id);
-  }
 }
