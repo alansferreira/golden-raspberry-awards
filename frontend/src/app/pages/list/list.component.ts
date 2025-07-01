@@ -6,20 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
-interface PageableResult<T>{
-  totalItems: number;
-  page: number;
-  items: T[]
-}
-interface Movie{
-  id?: number;
-  year: number;
-  title: string;
-  studio: string;
-  producer: string;
-  winner: boolean;
+import { Movie, PageableResult } from '../../utils/interfaces';
 
-}
 @Component({
   selector: 'app-list',
   imports: [
