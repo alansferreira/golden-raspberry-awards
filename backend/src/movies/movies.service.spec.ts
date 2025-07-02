@@ -35,7 +35,6 @@ describe('MoviesService', () => {
   });
   it('should get winners intervals', async () => {
     const result = await service.winnersIntervals();
-    console.log(result);
     expect(result).toBeDefined();
   });
 });

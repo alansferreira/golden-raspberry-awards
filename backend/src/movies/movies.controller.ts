@@ -4,7 +4,8 @@ import { Movies } from '../entity/Movies';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PageableResult } from '../utils/PageableResult';
-import { MoviesExpanded } from '../entity/MoviesExpanded';
+import { Producers } from '../entity/Producers';
+import { Studios } from '../entity/Studios';
 
 @Controller('movies')
 export class MoviesController {
@@ -12,9 +13,11 @@ export class MoviesController {
     private readonly moviesService: MoviesService,
     @InjectRepository(Movies)
     private moviesRepo: Repository<Movies>,
+    @InjectRepository(Studios)
+    private StudiosRepo: Repository<Studios>,
     
   ) {}
-  @Get('/winners-intervals')
+  @Get('/max-min-win-interval-for-producers')
   async getWinnersIntervals() {
     return await this.moviesService.winnersIntervals();
   }
@@ -57,11 +60,39 @@ export class MoviesController {
       .offset((page - 1) * size)
       .getMany(), 
       countquery
-    ]);
-
-    console.log(items)
-    console.log(year, winner, page, size)
-    
+    ]);    
     return {items, page, totalItems} as PageableResult<Movies>;
   }
+
+  @Get('/years-with-multiple-winners')
+  async yearsWithMultipleWinners() {
+
+    const years = await this.moviesRepo.createQueryBuilder()
+    .select('year')
+    .addSelect('COUNT(*)','winnerCount')
+    .groupBy('year')
+    .having('COUNT(*) > 1')
+    .orderBy('year', 'ASC')
+    .addOrderBy('COUNT(*)', 'DESC')
+    .getRawMany();
+    
+    return {years};
+  }
+
+  @Get('/studios-with-win-count')
+  async studiosWithWinCount() {
+
+    const studios = await this.StudiosRepo.createQueryBuilder()
+    .select('studio')
+    .addSelect('COUNT(*)','winsCount')
+    .groupBy('studio')
+    .having('COUNT(*) > 1')
+    .orderBy('COUNT(*)', 'DESC')
+    .addOrderBy('studio', 'ASC')
+    .limit(3)
+    .getRawMany();
+    
+    return {studios};
+  }
+
 }

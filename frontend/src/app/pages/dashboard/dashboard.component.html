@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row align-items-start">
     <div class="col">
-      <div class="mat-elevation-z8">
+      <div class="mat-elevation-z8" style="max-height: 418px; overflow: auto;">
         <h5 class="mb-4">List years with multiple winners</h5>
         <table mat-table [dataSource]="yearsWithMultipleWinners">
 
@@ -12,18 +12,18 @@
           </ng-container>
 
           <!-- winner Column -->
-          <ng-container matColumnDef="wins">
+          <ng-container matColumnDef="winnerCount">
             <th mat-header-cell *matHeaderCellDef>Win Count</th>
-            <td mat-cell *matCellDef="let element"> {{element.wins}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.winnerCount}} </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="['year', 'wins']"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['year', 'wins'];"></tr>
+          <tr mat-header-row *matHeaderRowDef="['year', 'winnerCount']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['year', 'winnerCount'];"></tr>
         </table>
       </div>
     </div>
     <div class="col">
-      <div class="mat-elevation-z8">
+      <div class="mat-elevation-z8" style="max-height: 418px; overflow: auto;">
         <h5 class="mb-4">Top 3 studios with winners</h5>
         <table mat-table [dataSource]="top3StudiosWinners">
           <!-- Name Column -->
@@ -33,20 +33,20 @@
           </ng-container>
 
           <!-- winner Column -->
-          <ng-container matColumnDef="wins">
+          <ng-container matColumnDef="winsCount">
             <th mat-header-cell *matHeaderCellDef>Win Count</th>
-            <td mat-cell *matCellDef="let element"> {{element.wins}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.winsCount}} </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="['studio', 'wins']"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['studio', 'wins'];"></tr>
+          <tr mat-header-row *matHeaderRowDef="['studio', 'winsCount']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['studio', 'winsCount'];"></tr>
         </table>
       </div>
     </div>
   </div>
   <div class="row align-items-start">
     <div class="col">
-      <div class="mat-elevation-z8">
+      <div class="mat-elevation-z8" style="max-height: 418px; overflow: auto;">
         <h5 class="mb-4">Producers with longest and shortest intervals between wins</h5>
         <h6 class="mb-4">Maximum</h6>
         <table mat-table [dataSource]="producersIntervals.max">
@@ -107,15 +107,14 @@
       </div>
     </div>
     <div class="col">
-      <div class="mat-elevation-z8">
+      <div class="mat-elevation-z8" style="max-height: 418px; overflow: auto;">
         <h5 class="mb-4">List movie winners by year</h5>
-        <mat-form-field >
+        <mat-form-field style="width: fit-content;">
           <input matInput type="number"
             [(ngModel)]="yearFilter"
             (change)="fetch()"
             placeholder="Search by year" />
         </mat-form-field>
-        <button>search</button>
 
         <table mat-table [dataSource]="moviesWinnersByYear">
           <ng-container matColumnDef="id">

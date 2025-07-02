@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, Generated } from 'typeorm';
 
 @Entity()
-export class MoviesExpanded {
+export class Producers {
   @PrimaryGeneratedColumn()
   @Generated()
   id?: number;
@@ -11,7 +11,7 @@ export class MoviesExpanded {
   @Column()
   title: string;
   @Column()
-  studio: string;
+  studios: string;
   @Column()
   producer: string;
   @Column()

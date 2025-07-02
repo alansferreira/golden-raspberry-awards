@@ -67,15 +67,6 @@ export class DashboardComponent {
       this.producersIntervals.max = data.max
     });
 
-    this.http.get<{
-      min: MaxMinWinIntervalForProducers[],
-      max: MaxMinWinIntervalForProducers[]
-    }>('http://localhost:3001/movies/max-min-win-interval-for-producers')
-    .subscribe(data => {
-      this.producersIntervals.min = data.min;
-      this.producersIntervals.max = data.max
-    });
-
     const params ={
       page: 1,
       size: 100,

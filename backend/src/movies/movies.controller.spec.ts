@@ -41,7 +41,6 @@ describe('MoviesController', () => {
   });
   it('should get winners intervals', async () => {
     const result = await controller.getWinnersIntervals();
-    console.log(result);
     expect(result).toBeDefined();
   });
 });

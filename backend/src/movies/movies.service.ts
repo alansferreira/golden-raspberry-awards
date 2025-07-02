@@ -2,21 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Movies } from '../entity/Movies';
-import { MoviesExpanded } from '../entity/MoviesExpanded';
+import { Producers } from '../entity/Producers';
+import { Studios } from '../entity/Studios';
 
 @Injectable()
 export class MoviesService {
   constructor(
     @InjectRepository(Movies)
     private moviesRepo: Repository<Movies>,
-    @InjectRepository(MoviesExpanded)
-    private moviesExpandedRepo: Repository<MoviesExpanded>,
+    @InjectRepository(Producers)
+    private ProducersRepo: Repository<Producers>,
+    @InjectRepository(Studios)
+    private StudiosRepo: Repository<Studios>,
   ) {}
 
   async winnersIntervals() {
-    const movies = await this.moviesExpandedRepo.query(
+    const movies = await this.ProducersRepo.query(
       [
-        'SELECT distinct producer, winner, year FROM Movies ',
+        'SELECT distinct producer, winner, year FROM producers ',
         'WHERE winner = true',
         'ORDER BY year DESC',
       ].join(' '),
@@ -65,7 +68,7 @@ export class MoviesService {
       max: winners.filter((f) => f.interval === maxInterval),
     };
   }
-  async expand(e: Pick<Movies, 'year' | 'title' | 'winner'> & { producers: string[], studios: string[]}): Promise<MoviesExpanded[]> {
+  async expand(e: Pick<Movies, 'year' | 'title' | 'winner'> & { producers: string[], studios: string[]}): Promise<Producers[]> {
     const {title, year, winner, producers, studios} = e
     
     await this.moviesRepo.save({
@@ -78,19 +81,28 @@ export class MoviesService {
     
     const results = [];
     
-    await this.moviesExpandedRepo.manager.transaction( async (t) => {
+    await this.ProducersRepo.manager.transaction( async (t) => {
       for (const studio of e.studios) {
-        for (const producer of e.producers) {
-          results.push(
-            await this.moviesExpandedRepo.save({
-              title, 
-              year, 
-              winner,
-              studio,
-              producer,
-            })
-          )
-        }
+        results.push(
+          await this.StudiosRepo.save({
+            title, 
+            year, 
+            winner,
+            studio,
+            producers: producers.join(', ')
+          })
+        )
+      }
+      for (const producer of e.producers) {
+        results.push(
+          await this.ProducersRepo.save({
+            title, 
+            year, 
+            winner,
+            producer,
+            studios: studios.join(', '),
+          })
+        )
       }
     })
     return results;
