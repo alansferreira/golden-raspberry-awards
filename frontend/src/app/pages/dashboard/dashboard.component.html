@@ -1,9 +1,9 @@
-<div class="container">
-  <div class="row align-items-start">
-    <div class="col">
-      <div class="mat-elevation-z8" style="max-height: 418px; overflow: auto;">
+<div class="container mt-4">
+  <div class="row align-items-start g-3">
+    <div class="col-12 col-md-6">
+      <div class="mat-elevation-z8 mt-4" style="max-height: 418px; overflow: auto;">
         <h5 class="mb-4">List years with multiple winners</h5>
-        <table mat-table [dataSource]="yearsWithMultipleWinners">
+        <table class="" mat-table [dataSource]="yearsWithMultipleWinners">
 
           <!-- Name Column -->
           <ng-container matColumnDef="year">
@@ -22,7 +22,7 @@
         </table>
       </div>
     </div>
-    <div class="col">
+    <div class="col-12 col-md-6">
       <div class="mat-elevation-z8" style="max-height: 418px; overflow: auto;">
         <h5 class="mb-4">Top 3 studios with winners</h5>
         <table mat-table [dataSource]="top3StudiosWinners">
@@ -43,9 +43,7 @@
         </table>
       </div>
     </div>
-  </div>
-  <div class="row align-items-start">
-    <div class="col">
+    <div class="col-12 col-md-6">
       <div class="mat-elevation-z8" style="max-height: 418px; overflow: auto;">
         <h5 class="mb-4">Producers with longest and shortest intervals between wins</h5>
         <h6 class="mb-4">Maximum</h6>
@@ -106,7 +104,7 @@
         </table>
       </div>
     </div>
-    <div class="col">
+    <div class="col-12 col-md-6">
       <div class="mat-elevation-z8" style="max-height: 418px; overflow: auto;">
         <h5 class="mb-4">List movie winners by year</h5>
         <mat-form-field style="width: fit-content;">
