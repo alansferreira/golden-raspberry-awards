@@ -32,12 +32,15 @@ npm run start
 npm run test
 ```
 
+## Banco de dados
 
+O banco de dados utilizado é SQLite.
+Sao usadas 3 tabelas: `movies`, `producers` e `studios`.
+O arquivo csv contém os dados dos filmes, onde cada linha representa um filme.
 
-
-
-
-
+* `movies`: contém os dados dos filmes contendo produtres e estudios horizontalizados.
+* `producers`: contém os dados dos produtores verticalizados.
+* `studios`: contém os dados dos estúdios verticalizados.
 
 
 ## Especificação do teste
