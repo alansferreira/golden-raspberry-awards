@@ -1,17 +1,35 @@
 # **Pior Filme** do *Golden Raspberry Awards* 
 
+## Descrição do projeto
+
+O projeto é um backend para um site de filmes, onde você pode consultar informações sobre os melhores filmes do Golden Raspberry Awards.
+## Tecnologias utilizadas
+
+Backend:
+- NestJS
+- TypeORM
+- TypeScript
+- Sqlite
+
+Frontend:
+- Angular
+- Angular Material 
+
+
 ## Iniciando
 
 ```bash
 cd backend
-yarn
-yarn start
+npm install
+npm run start
+npm run test
 ```
 
 ```bash
 cd frontend
-yarn
-yarn start
+npm install
+npm run start
+npm run test
 ```
 
 

@@ -16,7 +16,7 @@ export class MoviesService {
     private StudiosRepo: Repository<Studios>,
   ) {}
 
-  async winnersIntervals() {
+  async getMaxMinWinIntervalForProducers() {
     const movies = await this.ProducersRepo.query(
       [
         'SELECT distinct producer, winner, year FROM producers ',

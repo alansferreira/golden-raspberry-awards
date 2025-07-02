@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movies } from '../entity/Movies';
 import { MoviesService } from './movies.service';
+import { Producers } from '../entity/Producers';
+import { Studios } from '../entity/Studios';
 
 jest.setTimeout(30000);
 describe('MoviesService', () => {
@@ -16,10 +18,9 @@ describe('MoviesService', () => {
               type: 'sqlite',
               database: 'db.sqlite',
               // entities: [__dirname + '/src/entity/*{.ts,.js}'],
-              entities: [Movies],
+              entities: [Movies, Producers, Studios],
             }),
-            TypeOrmModule.forFeature([Movies]),
-            // k,
+            TypeOrmModule.forFeature([Movies, Producers, Studios]),
           ],
           providers: [MoviesService],
         }).compile();
@@ -34,7 +35,7 @@ describe('MoviesService', () => {
     expect(service).toBeDefined();
   });
   it('should get winners intervals', async () => {
-    const result = await service.winnersIntervals();
+    const result = await service.getMaxMinWinIntervalForProducers();
     expect(result).toBeDefined();
   });
 });

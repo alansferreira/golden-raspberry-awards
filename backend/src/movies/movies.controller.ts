@@ -18,11 +18,11 @@ export class MoviesController {
     
   ) {}
   @Get('/max-min-win-interval-for-producers')
-  async getWinnersIntervals() {
-    return await this.moviesService.winnersIntervals();
+  async getMaxMinWinIntervalForProducers() {
+    return await this.moviesService.getMaxMinWinIntervalForProducers();
   }
   @Get('/by-year')
-  async list(
+  async getByYear(
     
     @Query('year', new ParseIntPipe({optional: true})) 
     year?: number, 
@@ -34,7 +34,7 @@ export class MoviesController {
     page: number = 1,
     
     @Query('size', new ParseIntPipe({optional: true}))
-    size?: number,
+    size: number = 15,
   ) {
 
     const mainquery = this.moviesRepo.createQueryBuilder()
@@ -65,7 +65,7 @@ export class MoviesController {
   }
 
   @Get('/years-with-multiple-winners')
-  async yearsWithMultipleWinners() {
+  async getYearsWithMultipleWinners() {
 
     const years = await this.moviesRepo.createQueryBuilder()
     .select('year')
@@ -80,7 +80,7 @@ export class MoviesController {
   }
 
   @Get('/studios-with-win-count')
-  async studiosWithWinCount() {
+  async getStudiosWithWinCount() {
 
     const studios = await this.StudiosRepo.createQueryBuilder()
     .select('studio')
