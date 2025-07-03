@@ -68,7 +68,7 @@ export class DashboardComponent {
       this.producersIntervals.max = data.max
     });
 
-    this.moviesService.getwinnersByYear({year: this.yearFilter})
+    this.moviesService.getWinnersByYear({year: this.yearFilter})
     .subscribe(data => {
       this.moviesWinnersByYear = data;
     });

@@ -27,7 +27,7 @@ export class MoviesService {
     }>(`${BASE_URL}/api/movies/maxMinWinIntervalForProducers`)
   }
 
-  getwinnersByYear(params: {year: number}) {
+  getWinnersByYear(params: {year: number}) {
     return this.http.get<Movie[]>(`${BASE_URL}/api/movies/winnersByYear`,
       {params}
     )
