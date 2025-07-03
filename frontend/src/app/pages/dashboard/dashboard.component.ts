@@ -38,7 +38,15 @@ export class DashboardComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.fetch();
+    this.http.get<{
+      years: [YearWithMultipleWinners]
+    }>(`https://challenge.outsera.tech/api/movies/yearsWithMultipleWinners`)
+    .subscribe(data => {
+      this.yearFilter = data.years.slice(-1)[0]?.year;
+      this.fetch();
+
+    });
+
   }
 
   fetch(){
@@ -46,14 +54,14 @@ export class DashboardComponent {
 
     this.http.get<{
       years: [YearWithMultipleWinners]
-    }>('http://localhost:3001/movies/years-with-multiple-winners')
+    }>(`https://challenge.outsera.tech/api/movies/yearsWithMultipleWinners`)
     .subscribe(data => {
       this.yearsWithMultipleWinners = data.years;
     });
 
     this.http.get<{
       studios: [StudiosWithWinCount]
-    }>('http://localhost:3001/movies/studios-with-win-count')
+    }>(`https://challenge.outsera.tech/api/movies/studiosWithWinCount`)
     .subscribe(data => {
       this.top3StudiosWinners = data.studios;
     });
@@ -61,7 +69,7 @@ export class DashboardComponent {
     this.http.get<{
       min: MaxMinWinIntervalForProducers[],
       max: MaxMinWinIntervalForProducers[]
-    }>('http://localhost:3001/movies/max-min-win-interval-for-producers')
+    }>(`https://challenge.outsera.tech/api/movies/maxMinWinIntervalForProducers`)
     .subscribe(data => {
       this.producersIntervals.min = data.min;
       this.producersIntervals.max = data.max
@@ -75,11 +83,11 @@ export class DashboardComponent {
 
     if (this.yearFilter) params.year = this.yearFilter;
 
-    this.http.get<PageableResult<Movie>>('http://localhost:3001/movies/by-year',{
+    this.http.get<Movie[]>(`https://challenge.outsera.tech/api/movies/winnersByYear`,{
       params
     })
     .subscribe(data => {
-      this.moviesWinnersByYear = data.items;
+      this.moviesWinnersByYear = data;
     });
 
   }

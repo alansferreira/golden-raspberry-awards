@@ -28,7 +28,6 @@ export class ListComponent {
   winnerFilter?: boolean;
   totalItems: number = 0;
   currentPage: number = 1;
-  displayedColumns: string[] = ['id', 'year', 'title',  'winner'];
 
   constructor(private http: HttpClient) {}
   ngOnInit() {
@@ -38,20 +37,20 @@ export class ListComponent {
   fetch(e?: PageEvent){
     this.currentPage = (e?.pageIndex || 0) + 1;
     const params ={
-      page: this.currentPage,
+      page: this.currentPage - 1,
       size: 15
     } as any
 
     if (this.yearFilter) params.year = this.yearFilter;
     if (this.winnerFilter) params.winner = this.winnerFilter;
 
-    this.http.get<PageableResult<Movie>>('http://localhost:3001/movies/by-year',{
+    this.http.get<PageableResult<Movie>>('https://challenge.outsera.tech/api/movies',{
       params
     })
     .subscribe(data => {
-      this.movies = data.items;
-      this.totalItems = data.totalItems;
-      this.currentPage = data.page;
+      this.movies = data.content;
+      this.totalItems = data.totalElements;
+      this.currentPage = data.pageNumber + 1;
     });
   }
 
