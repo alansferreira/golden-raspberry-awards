@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { Movie, PageableResult } from '../../utils/interfaces';
+import { MoviesModule } from '../../movies/movies.module';
+import { MoviesService } from '../../movies/movies.service';
 
 @Component({
   selector: 'app-list',
@@ -14,10 +16,11 @@ import { Movie, PageableResult } from '../../utils/interfaces';
     MatPaginatorModule,
     MatTableModule,
     FormsModule,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
     MatCheckboxModule,
-    MatFormFieldModule,
+    // MatFormFieldModule,
     MatInputModule,
+    MoviesModule
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
@@ -29,7 +32,10 @@ export class ListComponent {
   totalItems: number = 0;
   currentPage: number = 1;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private moviesSevice: MoviesService
+  ) {}
   ngOnInit() {
     this.fetch();
   }
@@ -44,9 +50,7 @@ export class ListComponent {
     if (this.yearFilter) params.year = this.yearFilter;
     if (this.winnerFilter) params.winner = this.winnerFilter;
 
-    this.http.get<PageableResult<Movie>>('https://challenge.outsera.tech/api/movies',{
-      params
-    })
+    this.moviesSevice.getMovies(params)
     .subscribe(data => {
       this.movies = data.content;
       this.totalItems = data.totalElements;

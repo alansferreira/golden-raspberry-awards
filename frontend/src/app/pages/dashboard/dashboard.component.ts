@@ -8,11 +8,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import {
   Movie,
-  PageableResult,
   YearWithMultipleWinners,
   StudiosWithWinCount,
   MaxMinWinIntervalForProducers,
 } from '../../utils/interfaces';
+import { MoviesModule } from '../../movies/movies.module';
+import { MoviesService } from '../../movies/movies.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +25,7 @@ import {
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
+    MoviesModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -35,57 +37,38 @@ export class DashboardComponent {
   moviesWinnersByYear: Movie[] = []
   yearFilter!: number;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private moviesService: MoviesService,
+  ) {}
 
   ngOnInit() {
-    this.http.get<{
-      years: [YearWithMultipleWinners]
-    }>(`https://challenge.outsera.tech/api/movies/yearsWithMultipleWinners`)
+    // gets an sample year
+    this.moviesService.getYearWithMultipleWinners()
     .subscribe(data => {
       this.yearFilter = data.years.slice(-1)[0]?.year;
       this.fetch();
-
     });
-
   }
 
   fetch(){
-    // if (this.yearFilter) params.year = this.yearFilter;
-
-    this.http.get<{
-      years: [YearWithMultipleWinners]
-    }>(`https://challenge.outsera.tech/api/movies/yearsWithMultipleWinners`)
+    this.moviesService.getYearWithMultipleWinners()
     .subscribe(data => {
       this.yearsWithMultipleWinners = data.years;
     });
 
-    this.http.get<{
-      studios: [StudiosWithWinCount]
-    }>(`https://challenge.outsera.tech/api/movies/studiosWithWinCount`)
+    this.moviesService.getStudiosWithWinCount()
     .subscribe(data => {
       this.top3StudiosWinners = data.studios;
     });
 
-    this.http.get<{
-      min: MaxMinWinIntervalForProducers[],
-      max: MaxMinWinIntervalForProducers[]
-    }>(`https://challenge.outsera.tech/api/movies/maxMinWinIntervalForProducers`)
+    this.moviesService.getMaxMinWinIntervalForProducers()
     .subscribe(data => {
       this.producersIntervals.min = data.min;
       this.producersIntervals.max = data.max
     });
 
-    const params ={
-      page: 1,
-      size: 100,
-      winner: true
-    } as any
-
-    if (this.yearFilter) params.year = this.yearFilter;
-
-    this.http.get<Movie[]>(`https://challenge.outsera.tech/api/movies/winnersByYear`,{
-      params
-    })
+    this.moviesService.getwinnersByYear({year: this.yearFilter})
     .subscribe(data => {
       this.moviesWinnersByYear = data;
     });
